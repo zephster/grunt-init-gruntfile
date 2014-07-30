@@ -5,78 +5,56 @@ module.exports = function(grunt) {
   grunt.initConfig({{% if (min_concat) { %}
     // Metadata.{% if (package_json) { %}
     pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',{% } else { %}
     meta: {
       version: '0.1.0'
-    },
-    banner: '/*! PROJECT_NAME - v<%= meta.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '* http://PROJECT_WEBSITE/\n' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-      'YOUR_NAME; Licensed MIT */\n',{% } } %}
+    },{% } } %}
     // Task configuration.{% if (min_concat) { %}
     concat: {
       options: {
-        banner: '<%= banner %>',
-        stripBanners: true
+        separator: ';',
       },
       dist: {
-        src: ['{%= lib_dir %}/{%= file_name %}.js'],
-        dest: 'dist/{%= file_name %}.js'
+        //list of files to concat.
+        //eg: bootstrap module .js files
+        src: [''],
+        //final concatenated, un-uglified file, private.
+        //eg: private/js/bootstrap.js
+        dest: ''
       }
     },
     uglify: {
-      options: {
-        banner: '<%= banner %>'
+      //app js files
+      js: {
+        files: {
+          //list of files to uglify. destination(public): source(private)
+          //eg: public/assets/js/app.min.js' : ['private/js/app.js']
+          '' : ['']
+        }
       },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/{%= file_name %}.min.js'
+      //framework js files (jquery, bootstrap, etc)
+      vendor: {
+        files: {
+          //destination(public) : source(private)
+          //eg: public/assets/js/jquery.min.js' : ['bower_components/jquery/dist/jquery.js']
+          '' : ['']
+        }
       }
     },{% } %}
     jshint: {
+      files: ['<%= watch.js.files %>'], //auto jshint all watched js files
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,{% if (dom) { %}
-        browser: true,{% } %}
-        globals: {{% if (jquery) { %}
-          jQuery: true
-        {% } %}}
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib_test: {
-        src: ['{%= lib_dir %}/**/*.js', '{%= test_dir %}/**/*.js']
+        asi   : true,
+        eqeqeq: false,
+        jquery: true
       }
-    },{% if (dom) { %}
-    {%= test_task %}: {
-      files: ['{%= test_dir %}/**/*.html']
-    },{% } else { %}
-    {%= test_task %}: {
-      files: ['{%= test_dir %}/**/*_test.js']
-    },{% } %}
+    },
     watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+      grunt: {
+        files: ['Gruntfile.js'],
+        tasks: ['uglify'] //tasks to run when gruntfile changes
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', '{%= test_task %}']
+      js: {
+        files: [''] //set (private source) files to watch. eg: private/js/app.js
       }
     }
   });
@@ -84,11 +62,10 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.{% if (min_concat) { %}
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');{% } %}
-  grunt.loadNpmTasks('grunt-contrib-{%= test_task %}');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', '{%= test_task %}'{%= min_concat ? ", 'concat', 'uglify'" : "" %}]);
+  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 
 };

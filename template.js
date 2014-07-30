@@ -25,12 +25,12 @@ exports.template = function(grunt, init, done) {
 
   init.process({}, [
     // Prompt for these values.
-    {
-      name: 'dom',
-      message: 'Is the DOM involved in ANY way?',
-      default: 'Y/n',
-      warning: 'Yes: QUnit unit tests + JSHint "browser" globals. No: Nodeunit unit tests.'
-    },
+    // {
+    //   name: 'dom',
+    //   message: 'Is the DOM involved in ANY way?',
+    //   default: 'Y/n',
+    //   warning: 'Yes: QUnit unit tests + JSHint "browser" globals. No: Nodeunit unit tests.'
+    // },
     {
       name: 'min_concat',
       message: 'Will files be concatenated or minified?',
@@ -44,10 +44,10 @@ exports.template = function(grunt, init, done) {
       warning: 'This changes how filenames are determined and banners are generated.'
     }
   ], function(err, props) {
-    props.dom = /y/i.test(props.dom);
+    // props.dom = /y/i.test(props.dom);
     props.min_concat = /y/i.test(props.min_concat);
     props.package_json = /y/i.test(props.package_json);
-    props.test_task = props.dom ? 'qunit' : 'nodeunit';
+    // props.test_task = props.dom ? 'qunit' : 'nodeunit';
     props.file_name = props.package_json ? '<%= pkg.name %>' : 'FILE_NAME';
 
     // Find the first `preferred` item existing in `arr`.
@@ -83,11 +83,11 @@ exports.template = function(grunt, init, done) {
         'grunt-contrib-watch': '~0.6.1'
       };
 
-      if (props.dom) {
-        devDependencies['grunt-contrib-qunit'] = '~0.5.2';
-      } else {
-        devDependencies['grunt-contrib-nodeunit'] = '~0.4.1';
-      }
+      // if (props.dom) {
+      //   devDependencies['grunt-contrib-qunit'] = '~0.5.2';
+      // } else {
+      //   devDependencies['grunt-contrib-nodeunit'] = '~0.4.1';
+      // }
 
       if (props.min_concat) {
         devDependencies['grunt-contrib-concat'] = '~0.4.0';
