@@ -1,6 +1,9 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);
+
   // Project configuration.
   grunt.initConfig({{% if (min_concat) { %}
     // Metadata.{% if (package_json) { %}
@@ -59,13 +62,7 @@ module.exports = function(grunt) {
     }
   });
 
-  // These plugins provide necessary tasks.{% if (min_concat) { %}
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');{% } %}
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
   // Default task.
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-
+  grunt.registerTask('build', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('default', ['build','watch']);
 };

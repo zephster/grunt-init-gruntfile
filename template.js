@@ -80,7 +80,8 @@ exports.template = function(grunt, init, done) {
       var devDependencies = {
         'grunt': '~0.4.5',
         'grunt-contrib-jshint': '~0.10.0',
-        'grunt-contrib-watch': '~0.6.1'
+        'grunt-contrib-watch': '~0.6.1',
+        'load-grunt-tasks': '~0.6.0'
       };
 
       // if (props.dom) {
