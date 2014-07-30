@@ -5,13 +5,13 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   // Project configuration.
-  grunt.initConfig({{% if (min_concat) { %}
-    // Metadata.{% if (package_json) { %}
+  grunt.initConfig(
+    // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     meta: {
       version: '0.1.0'
-    },{% } } %}
-    // Task configuration.{% if (min_concat) { %}
+    },
+    // Task configuration.
     concat: {
       options: {
         separator: ';',
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           '' : ['']
         }
       }
-    },{% } %}
+    },
     jshint: {
       files: ['<%= watch.js.files %>'], //auto jshint all watched js files
       options: {
